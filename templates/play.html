@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block title %}Partie{% endblock %}
+
+{% block content %}
+    <p>Joueur : {{ state.username }}</p>
+    <p>Mot : {{ state.word }}</p>
+    <p>Vies restantes : {{ state.lives }}</p>
+    <p></p>
+{% endblock %}

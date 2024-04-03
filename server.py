@@ -64,3 +64,14 @@ def home():
     return render_template('home.html')
 
 
+@app.route('/play', methods=['GET', 'POST'])
+def play():
+    global state
+    if request.method == 'GET' and state is None:
+        return redirect(url_for('home'))
+    if request.method == 'POST':
+        if 'username' in request.form.keys() and request.form['username'] != '':
+            state.username = request.form['username']
+        if 'guesses' in request.form.keys() and request.form['guesses'] != '':
+            pass
+    return render_template('play.html', state=state)
