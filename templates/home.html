@@ -4,8 +4,8 @@
 
 {% block content %}
     <form method="post" action="{{ url_for('play') }}">
-        <label for="username">Nom du joueur</label>
-        <input name="username" id="username" type="text" maxlength="50" placeholder="Alphonse Robichu" required>
+        <label for="player_name">Nom du joueur</label>
+        <input autofocus name="player_name" id="player_name" type="text" maxlength="50" placeholder="Alphonse Robichu" required>
         <button type="submit">Démarrer</button>
     </form>
 {% endblock %}

@@ -3,8 +3,35 @@
 {% block title %}Partie{% endblock %}
 
 {% block content %}
-    <p>Joueur : {{ state.username }}</p>
-    <p>Mot : {{ state.word }}</p>
-    <p>Vies restantes : {{ state.lives }}</p>
-    <p></p>
+    <p>Joueur : {{ player_name }}</p>
+    <p>Vies restantes : {{ player_lives }}</p>
+    <img src="{{ url_for('static', filename='Hangman-' + ((player_lives - 6) * -1)|string + '.png') }}"/>
+    <p>Mot : {{ masked_word }}</p>
+    {% if is_gameover == False %}
+        <form action="{{ url_for('play') }}" method="post">
+            <table>
+                {% for i in range((keys|length + 5) // 5) %}
+                    <tr>
+                        {% for key in keys[i * 5:i * 5 + 5] %}
+                            <td>
+                                <button name="letter" value="{{ key }}">{{ key }}</button>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+    {% else %}
+        <p>
+            {% if has_won == True %}
+                Gagné! Tu as deviné "{{ secret_word }}"
+            {% else %}
+                Perdu! Le mot était "{{ secret_word }}"
+            {% endif %}
+        </p>
+        <form method="post" action="{{ url_for('play') }}">
+            <input hidden="hidden" name="player_name" type="text" value="{{ player_name }}">
+            <button type="submit">Recommencer</button>
+        </form>
+    {% endif %}
 {% endblock %}
