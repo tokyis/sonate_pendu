@@ -1,5 +1,8 @@
+import random
+import string
+import unicodedata
+
 from flask import Flask, render_template, request
-import string, unicodedata, random
 
 app = Flask(__name__)
 
@@ -17,15 +20,15 @@ class GameState:
     :type secret_word: str
     :param player_lives: The number of player_lives the player has. (default: MAX_LIVES)
     :type player_lives: int
-    :param guesses: The letters guessed by the player. (default: '')
+    :param player_guesses: The letters guessed by the player. (default: '')
     :type player_guesses: str
     """
 
-    def __init__(self, player_name='', player_lives=MAX_LIVES, secret_word=''):
+    def __init__(self, player_name='', player_lives=MAX_LIVES, secret_word='', player_guesses=''):
         self.player_name = player_name.strip()
         self.player_lives = player_lives
-        self.player_guesses = ''
         self.secret_word = secret_word
+        self.player_guesses = player_guesses
 
 
 state: GameState = None
