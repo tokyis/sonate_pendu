@@ -121,7 +121,10 @@ def play():
                 state.player_guesses += "'"
 
         # Handle playing, wining and losing
-        if 'letter' in request.form.keys() and request.form['letter'] != '':
+        if ('letter' in request.form.keys()
+                and request.form['letter'] != ''
+                and request.form['letter'] not in state.player_guesses):
+
             letter = request.form['letter'].strip()
             state.player_guesses += letter
             if letter not in normalize_string(state.secret_word):
