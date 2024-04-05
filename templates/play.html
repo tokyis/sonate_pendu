@@ -3,21 +3,28 @@
 {% block title %}Partie{% endblock %}
 
 {% block content %}
-    <p>Joueur : {{ player_name }}</p>
-    <p>Vies restantes : {{ player_lives }}</p>
+
+    <header>
+        <span class="player_name">Joueur : <strong>{{ player_name }}</strong></span>
+        <span class="lives">Vies restantes : <strong>{{ player_lives }}</strong></span>
+    </header>
+
     {% if has_won %}
         {% set image_url = url_for('static', filename='pw.png') %}
     {% else %}
         {% set image_url = url_for('static', filename='p' + player_lives|string + '.png') %}
     {% endif %}
-    <img src="{{ image_url }}"/>
-    <p>Mot : {{ masked_word }}</p>
+    <img class="state_display" src="{{ image_url }}"/>
+
+    <p class="secret_word">Mot : {{ masked_word }}</p>
+
     {% if is_gameover == False %}
-        <form action="{{ url_for('play') }}" method="post">
+        <form class="keyboard" action="{{ url_for('play') }}" method="post">
             <table>
-                {% for i in range((keys|length + 5) // 5) %}
+                {% set col_count = 13 %}
+                {% for i in range((keys|length + col_count) // col_count) %}
                     <tr>
-                        {% for key in keys[i * 5:i * 5 + 5] %}
+                        {% for key in keys[i * col_count:i * col_count + col_count] %}
                             <td>
                                 <button name="letter" value="{{ key }}">{{ key }}</button>
                             </td>
@@ -27,16 +34,17 @@
             </table>
         </form>
     {% else %}
-        <p>
+        <span class="gameover">
             {% if has_won == True %}
-                Gagné! Tu as deviné "{{ secret_word }}"
+                Gagné!<br>Tu as deviné "{{ secret_word }}"
             {% else %}
-                Perdu! Le mot était "{{ secret_word }}"
+                Perdu!<br>Le mot était "{{ secret_word }}"
             {% endif %}
-        </p>
+        </span>
         <form method="post" action="{{ url_for('play') }}">
             <input hidden="hidden" name="player_name" type="text" value="{{ player_name }}">
             <button type="submit">Recommencer</button>
         </form>
     {% endif %}
+
 {% endblock %}

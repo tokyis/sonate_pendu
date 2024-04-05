@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Sriracha&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+body, button, input {
+    font-family: 'Sriracha', cursive;
+    font-size: larger;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content h1 {
+    font-size: 3em;
+    text-align: center;
+}
+
+.name_input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.name_input input {
+    font-size: 1em;
+    padding: 0.5em;
+}
+
+.name_input button {
+    line-height: 1.3em;
+    background: #eeeeee;
+    border: solid 0.1em #000000;
+    border-radius: 5px;
+}
+
+.content header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    width: 100vw;
+}
+
+.player_name, .lives {
+    font-size: 2rem;
+}
+
+.state_display {
+    max-height: 50vh;
+    max-width: 100vw;
+    object-fit: contain;
+}
+
+.secret_word {
+    margin: 0.25em 0;
+    font-size: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.keyboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyboard button {
+    width: 1.4em;
+    line-height: 1.2em;
+    background: #fcfcfd;
+    border: solid 0.1em #000000;
+    border-radius: 5px;
+}
+
+.keyboard button:hover {
+    background: #bebebe;
+}
+
+.keyboard button:active {
+    background: #8c8c8c;
+    outline: inset 0.1em #a6a6a6;
+}
+
+.gameover {
+    font-size: 2em;
+    text-align: center;
+}
+
+.gameover + form {
+    margin-top: 1em;
+}

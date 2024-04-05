@@ -3,9 +3,12 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-    <form method="post" action="{{ url_for('play') }}">
+    <h1>Le Pendu</h1>
+    <form class="name_input" method="post" action="{{ url_for('play') }}">
         <label for="player_name">Nom du joueur</label>
-        <input autofocus name="player_name" id="player_name" type="text" maxlength="50" placeholder="Alphonse Robichu" required>
+        <input autofocus name="player_name" id="player_name"
+               type="text" maxlength="20" placeholder="Alphonse Robichu" required>
+        <br>
         <button type="submit">Démarrer</button>
     </form>
 {% endblock %}
