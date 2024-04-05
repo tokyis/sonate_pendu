@@ -36,12 +36,12 @@
     {% else %}
         <span class="gameover">
             {% if has_won == True %}
-                Gagné!<br>Tu as deviné "{{ secret_word }}"
+                Gagné!<br>Tu as deviné "<strong>{{ secret_word }}</strong>"
             {% else %}
-                Perdu!<br>Le mot était "{{ secret_word }}"
+                Perdu!<br>Le mot était "<strong>{{ secret_word }}</strong>"
             {% endif %}
         </span>
-        <form method="post" action="{{ url_for('play') }}">
+        <form class="gameover" method="post" action="{{ url_for('play') }}">
             <input hidden="hidden" name="player_name" type="text" value="{{ player_name }}">
             <button type="submit">Recommencer</button>
         </form>

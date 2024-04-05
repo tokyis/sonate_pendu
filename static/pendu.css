@@ -40,6 +40,16 @@ body, button, input {
     border-radius: 5px;
 }
 
+.name_input button:hover {
+    background: #bebebe;
+}
+
+.name_input button:active {
+    background: #8c8c8c;
+    outline: inset 0.1em #a6a6a6;
+}
+
+
 .content header {
     display: flex;
     flex-wrap: nowrap;
@@ -88,11 +98,27 @@ body, button, input {
     outline: inset 0.1em #a6a6a6;
 }
 
-.gameover {
+span.gameover {
     font-size: 2em;
     text-align: center;
 }
 
 .gameover + form {
-    margin-top: 1em;
+    margin-top: 0.5em;
+}
+
+form.gameover button {
+    line-height: 1.5em;
+    background: #eeeeee;
+    border: solid #000000;
+    border-radius: 5px;
+}
+
+form.gameover button:hover {
+    background: #bebebe;
+}
+
+form.gameover button:active {
+    background: #8c8c8c;
+    outline: inset 0.1em #a6a6a6;
 }
