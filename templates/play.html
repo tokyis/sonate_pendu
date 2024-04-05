@@ -5,7 +5,12 @@
 {% block content %}
     <p>Joueur : {{ player_name }}</p>
     <p>Vies restantes : {{ player_lives }}</p>
-    <img src="{{ url_for('static', filename='Hangman-' + ((player_lives - 6) * -1)|string + '.png') }}"/>
+    {% if has_won %}
+        {% set image_url = url_for('static', filename='pw.png') %}
+    {% else %}
+        {% set image_url = url_for('static', filename='p' + player_lives|string + '.png') %}
+    {% endif %}
+    <img src="{{ image_url }}"/>
     <p>Mot : {{ masked_word }}</p>
     {% if is_gameover == False %}
         <form action="{{ url_for('play') }}" method="post">
