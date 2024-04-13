@@ -107,41 +107,44 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/play', methods=['POST'])
+@app.route('/play', methods=['GET', 'POST'])
 def play():
     global state, dictionary
     is_gameover = False
     has_won = False
 
-    if request.method == 'POST':
-        # Handle starting or restarting a round
-        if 'player_name' in request.form.keys() and request.form['player_name'] != '':
-            state = GameState(request.form['player_name'].strip(), MAX_LIVES, random.choice(dictionary))
-            print(f"Starting new game, secret secret_word is : {state.secret_word}")
-            # Apostrophes don't need to be guessed
-            if "'" in state.secret_word:
-                state.player_guesses += "'"
+    # Handle starting or restarting a round
+    if 'player_name' in request.form.keys() and request.form['player_name'] != '':
+        state = GameState(
+            request.form['player_name'].strip(),
+            MAX_LIVES,
+            random.choice(dictionary))
+        print(f"Starting new game, secret secret_word is : {state.secret_word}")
+        # Apostrophes can't be guessed
+        if "'" in state.secret_word:
+            state.player_guesses += "'"
+    elif 'letter' not in request.form.keys():
+        return flask.redirect(url_for('home'), 302)
 
-        # Handle playing, wining and losing
-        if ('letter' in request.form.keys()
-                and request.form['letter'] != ''
-                and request.form['letter'] not in state.player_guesses):
-
-            letter = request.form['letter'].strip()
-            state.player_guesses += letter
-            if letter not in normalize_string(state.secret_word):
-                state.player_lives -= 1
-                print(f"Wrong : '{letter}' is not in {state.secret_word}, "
-                      f"{state.player_lives} live(s) left.")
-                if state.player_lives == 0:
-                    print(f"Game lost.")
-                    is_gameover = True
-            else:
-                print(f"Right : '{letter}' is in {state.secret_word}, {state.player_lives} live(s) left.")
-                if is_word_found(state.player_guesses, state.secret_word):
-                    print(f"Game won.")
-                    is_gameover = True
-                    has_won = True
+    # Handle playing, wining and losing
+    if ('letter' in request.form.keys()
+            and request.form['letter'] != ''
+            and request.form['letter'] not in state.player_guesses):
+        letter = request.form['letter'].strip()
+        state.player_guesses += letter
+        if letter not in normalize_string(state.secret_word):
+            state.player_lives -= 1
+            print(f"Wrong : '{letter}' is not in {state.secret_word}, "
+                  f"{state.player_lives} live(str) left.")
+            if state.player_lives == 0:
+                print(f"Game lost.")
+                is_gameover = True
+        else:
+            print(f"Right : '{letter}' is in {state.secret_word}, {state.player_lives} live(str) left.")
+            if is_word_found(state.player_guesses, state.secret_word):
+                print(f"Game won.")
+                is_gameover = True
+                has_won = True
 
     return render_template('play.html',
                            keys=string.ascii_lowercase,
