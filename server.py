@@ -1,12 +1,14 @@
 import random
 import string
+
+import flask
 import unicodedata
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 
 app = Flask(__name__)
 
-DICTIONARY_PATH = 'dictionnaire.txt'
+DICTIONARY_PATH = './dictionnaire.txt'
 MAX_LIVES = 5
 
 
@@ -14,11 +16,11 @@ class GameState:
     """
     Represents the state of the game.
 
-    :param player_name: The player_name of the player. (default: '')
+    :param player_name: The name of the player. (default: '')
     :type player_name: str
-    :param secret_word: The secret_word to guess. (default: '')
+    :param secret_word: The secret word to guess. (default: '')
     :type secret_word: str
-    :param player_lives: The number of player_lives the player has. (default: MAX_LIVES)
+    :param player_lives: The number of lives the player has. (default: MAX_LIVES)
     :type player_lives: int
     :param player_guesses: The letters guessed by the player. (default: '')
     :type player_guesses: str
@@ -37,11 +39,12 @@ dictionary: list = None
 
 def build_dictionary(path):
     """
-    Reads a text file from the given `path` and extracts the first value from each line, separated by a semicolon.
+    Reads a text file from the given `path` and extracts the first value preceded by a semicolon.
 
     :param path: The path to the text file.
-    :return: A list of the first values extracted from each line.
+    :return: A list of words.
     """
+    global dictionary
     with open(path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
         dictionary = []
@@ -52,26 +55,25 @@ def build_dictionary(path):
     return dictionary
 
 
-def normalize_string(s):
+def normalize_string(str):
     """
-    Normalize a string by removing accents.
+    Normalize a string by removing diacritics.
 
-    :param s: The input string.
-    :return: The normalized string.
-
+    :param str: The input string. ex.'ça arrive bientôt'
+    :return: The normalized string. ex. 'ca arrive bientot'
     """
     return ''.join(
-        c for c in unicodedata.normalize('NFD', s)
+        c for c in unicodedata.normalize('NFD', str)
         if unicodedata.category(c) != 'Mn'
     )
 
 
 def get_masked_word(word, guessed_letters):
     """
-    :param word: The secret_word to be masked.
+    :param word: The word to be masked.
     :param guessed_letters: The letters that have been guessed by the player.
-    :return: The masked secret_word with letters that have been guessed correctly and underscores for letters that haven't been guessed.
-
+    :return: The masked word where letters that have been guessed
+     correctly are visible and letters that haven't been guessed are replaced with underscore(str).
     """
     masked_word = ''
     for letter in word:
@@ -84,11 +86,11 @@ def get_masked_word(word, guessed_letters):
 
 def is_word_found(guessed_letters, word):
     """
-    Determines if all the letters in the secret_word have been guessed correctly.
+    Determines if all the letters in the word have been guessed correctly.
 
     :param guessed_letters: A list or string of letters that have been guessed.
-    :param word: The secret_word to be guessed.
-    :return: True if all the letters in the secret_word have been guessed correctly, False otherwise.
+    :param word: The word to be guessed.
+    :return: True if all the letters in the word have been guessed correctly, False otherwise.
     """
     global state
     for letter in word:
