@@ -1,3 +1,11 @@
+# Classe inversée Groupe 2
+#
+# Alexandre B.
+# Alexandre D.C.S.
+# Kevin M.-C.
+# Inès P.
+# Léa S.
+
 import random
 import string
 
